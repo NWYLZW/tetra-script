@@ -82,6 +82,8 @@ class CommandDeclare {
   static compile(str: String, deep: number = 0): Array<ModuleDeclare | VarDeclare> {
     const compileDeclares: Array<ModuleDeclare | VarDeclare> = [];
     const stack: Array<String> = [];
+    let childStr = '', quotationMarks = false;
+
     const isVar = (): boolean => {
       return stack.length === 0;
     };
@@ -91,29 +93,27 @@ class CommandDeclare {
     const defaultFun = (ch) => {
       childStr += ch;
     };
-    let childStr = '';
+    const dealVar = (ch, isEnd) => {
+      if (isEnd) defaultFun(ch);
+      if (childStr === '') return;
+      if (isVar()) {
+        if (childStr[0] === '"' || childStr[0] == "'") {
+          childStr = childStr.slice(1, childStr.length - 1)
+        }
+        compileDeclares.push(
+          VarDeclare.compile(childStr)
+        );
+        childStr = '';
+      }
+    }
 
     for (let i = 0; i < str.length; i++) {
       const ch = str[i];
       const isEnd = i === str.length - 1;
       if (
-        stack.length == 0
-        && (ch === ',' || isEnd)
+        !isVar()
+        && (ch === '}' || isEnd)
       ) {
-        if (childStr === '') continue;
-        if (isEnd) defaultFun(ch);
-        if (isVar()) {
-          if (childStr[0] === '"' || childStr[1] == "'") {
-            childStr = childStr.slice(1, childStr.length - 1)
-          }
-          compileDeclares.push(
-            VarDeclare.compile(childStr)
-          );
-          childStr = '';
-        }
-        continue;
-      }
-      if (ch === '}' && !isVar()) {
         if (stack.length > 1) {
           defaultFun(ch);
         }
@@ -126,7 +126,16 @@ class CommandDeclare {
         }
         continue;
       }
-      if (ch === '{') {
+      if (ch === ',' || isEnd) {
+        dealVar(ch, isEnd);
+        continue;
+      }
+      if (ch === '\"' && !inChild()) {
+        quotationMarks = !quotationMarks;
+      }
+      if (ch === '{' && !quotationMarks) {
+        dealVar(ch, isEnd);
+
         if (!isVar() || childStr === '') {
           stack.push(ch);
           if (stack.length > 1) {
@@ -186,11 +195,13 @@ class ModuleDeclare {
 
     for (let i = 0; i < str.length; i++) {
       const ch = str[i];
-      if (ch === ';' || i === str.length - 1) {
-        if (stack.length == 0) {
-          if (
-            i === str.length - 1 && ch !== ';'
-          ) defaultFun(ch);
+      const isEnd = i === str.length - 1;
+      if (ch === ';' || isEnd) {
+        if (
+          stack.length === 0
+          || (ch === '}' && stack.length === 1)
+        ) {
+          if (ch !== ';' && ch !== '\n') defaultFun(ch);
           curCommand?.appendChildren(
             CommandDeclare.compile(content, deep + 1)
           );
