@@ -12,6 +12,9 @@
     "paths": {
       "tetra-script/*": [
         "src/*"
+      ],
+      "tetra-script": [
+        "src/index"
       ]
     }
   },
