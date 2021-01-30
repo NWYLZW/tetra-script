@@ -1,12 +1,9 @@
 {
   "compilerOptions": {
-    "module": "amd",
-    "target": "es5",
-    "allowJs": true,
-    "removeComments": true,
-
+    "target": "es6",
+    "module": "commonjs",
     "esModuleInterop": true,
-    "outDir": "static/js/lib/tetra-script",
+    "outDir": "dist",
     "strict": true,
     "noImplicitAny": false,
     "moduleResolution": "node",
