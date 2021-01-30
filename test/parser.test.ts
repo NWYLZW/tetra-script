@@ -46,6 +46,10 @@ describe('Test simple parser suite:', () => {
 describe('Test parser suite:', () => {
   test('test-compile-with-child', () => {
     const strs = {
+      'a: {b: "c "}':
+        'a: {\n' +
+        '  b: "c ";\n' +
+        '};',
       'SetVar: {GetVar: "temp ";}, "hello world";':
         'SetVar: {\n' +
         '  GetVar: "temp ";\n' +
@@ -57,9 +61,6 @@ describe('Test parser suite:', () => {
     }
     for (let str in strs) {
       const compileResult = Parser.compile(str);
-      console.log(
-        compileResult.toString(2)
-      )
       expect(compileResult.toString(2)).toBe(strs[str]);
     }
   })
@@ -94,20 +95,54 @@ describe('Test parser suite:', () => {
   test('test-compile', () => {
     const content = readFileSync('test/.data/test.min.tetraScript', 'utf8');
     const compileResult = Parser.compile(content);
+    console.log(compileResult.toString(2))
     expect(compileResult.toString(2)+'\n').toBe(
       readFileSync('test/.data/test.tetraScript', 'utf8')
     );
   })
 
   test('test-long-compile', () => {
-    // console.log(Parser.compile(
-    //   readFileSync('test/.data/test-long-1.min.tetraScript', 'utf8')
-    // ).toString(2));
-    // console.log(Parser.compile(
-    //   readFileSync('test/.data/test-long-2.min.tetraScript', 'utf8')
-    // ).toString(2));
-    console.log(Parser.compile(
-      readFileSync('test/.data/test-long-3.min.tetraScript', 'utf8')
-    ).toString(2));
+    const files = [
+      'test/.data/test-long-1',
+      'test/.data/test-long-2',
+      'test/.data/test-long-3'
+    ]
+    files.forEach(file => {
+      console.log(Parser.compile(
+        readFileSync(`${file}.min.tetraScript`, 'utf8')
+      ).toString(2));
+    });
+  })
+})
+
+describe('Test characteristic parser suite:', () => {
+  test('test-ignore-comma', () => {
+    const strs = {
+      'SetVar: {GetVar: "temp ";}"hello world";':
+        'SetVar: {\n' +
+        '  GetVar: "temp ";\n' +
+        '}, "hello world";',
+      'lf:{!=:{grev:_disable}true}':
+        'lf: {\n' +
+        '  !=: {\n' +
+        '    grev: "_disable";\n' +
+        '  }, "true";\n' +
+        '};'
+    }
+    for (let str in strs) {
+      const compileResult = Parser.compile(str);
+      expect(compileResult.toString(2)).toBe(strs[str]);
+    }
+  })
+
+  test('test-ignore-arguments', () => {
+    const strs = {
+      'SetVar;':
+        'SetVar;'
+    }
+    for (let str in strs) {
+      const compileResult = Parser.compile(str);
+      expect(compileResult.toString(2)).toBe(strs[str]);
+    }
   })
 })

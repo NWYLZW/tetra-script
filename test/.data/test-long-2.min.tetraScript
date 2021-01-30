@@ -29,4 +29,4 @@ With:{grev:_applyer}
 {ivkevt:PreTakeAttack_Final,$arg0};
 ivkevt:PreTakeAttack_End,$arg0;
 DecreaseHp:{grev:_damage};
-ivkevt:SufTakeAttack,$arg0}}
+ivkevt:SufTakeAttack,$arg0}}}}}
