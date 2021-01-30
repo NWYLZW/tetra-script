@@ -1,0 +1,1 @@
+SetVar: "a", "hello world";If:{ ==: {GetVar: "a";}, "hello world"; }{log: "yes";}{log: "no";}
