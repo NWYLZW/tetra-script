@@ -6,7 +6,7 @@
  */
 import {describe, test, it} from '@jest/globals';
 import {readFileSync} from "fs";
-import Parser from "@/index";
+import Parser from "tetra-script";
 
 describe('Test simple parser suite:', () => {
   test('test-simple-arg-compile', () => {

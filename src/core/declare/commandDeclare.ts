@@ -4,8 +4,8 @@
  * @date   2021-01-31
  * @note   yijie 2021-01-31 Created the file commandDeclare.js
  */
-import VarDeclare from "@/core/declare/varDeclare";
-import ModuleDeclare from "@/core/declare/moduleDeclare";
+import VarDeclare from "tetra-script/core/declare/varDeclare";
+import ModuleDeclare from "tetra-script/core/declare/moduleDeclare";
 
 export default class CommandDeclare {
   public deep: number = -1;
