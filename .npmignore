@@ -1,0 +1,10 @@
+.commit-template.json
+.jest.config.ts
+
+.editorconfig
+.gitignore
+AUTHORS
+*.lock
+
+.idea
+test
