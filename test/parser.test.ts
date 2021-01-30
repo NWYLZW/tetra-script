@@ -5,8 +5,8 @@
  * @note   yijie 2021-01-30 Created the file test-Parser.js
  */
 import {describe, test, it} from '@jest/globals';
-import Parser from "../src/core/parser";
 import {readFileSync} from "fs";
+import Parser from "@/index";
 
 describe('Test simple parser suite:', () => {
   test('test-simple-arg-compile', () => {
