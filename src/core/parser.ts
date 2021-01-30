@@ -4,7 +4,7 @@
  * @date   2021-01-30
  * @note   yijie 2021-01-30 Created the file parser.ts
  */
-import ModuleDeclare from "tetra-script/core/declare/moduleDeclare";
+import ModuleDeclare from "./declare/moduleDeclare";
 
 export default class Parser {
   static compile(str: String, deep: number = 0): ModuleDeclare {
