@@ -125,7 +125,6 @@ describe('Test parser suite:', () => {
   test('test-compile', () => {
     const content = readFileSync('test/.data/test.min.tetraScript', 'utf8');
     const compileResult = Parser.compile(content);
-    console.log(compileResult.toString(2))
     expect(compileResult.toString(2)+'\n').toBe(
       readFileSync('test/.data/test.tetraScript', 'utf8')
     );
