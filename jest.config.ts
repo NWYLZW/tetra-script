@@ -5,9 +5,13 @@
  * @logs[0] 2021-01-09 19:07 yijie 创建了jest.config.js.js文件
  */
 import type { Config } from '@jest/types';
+import path = require("path");
 
 const config: Config.InitialOptions = {
   verbose: true,
+  "moduleNameMapper": {
+    '@/(.*)': path.join(__dirname, './src/$1')
+  },
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
   },

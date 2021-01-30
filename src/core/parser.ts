@@ -5,13 +5,6 @@
  * @note   yijie 2021-01-30 Created the file parser.ts
  */
 
-/*
-class module = `
-  commandName: {}, {}, ...;
-  ...;
-`
-*/
-
 enum VarDeclareType {
   NUMBER,
   STRING,
