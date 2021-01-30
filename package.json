@@ -1,6 +1,6 @@
 {
   "name": "tetra-script",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "tetra task script deal.",
   "main": "./dist/index.js",
   "author": "yijie",
