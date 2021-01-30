@@ -11,9 +11,9 @@ evt.PreApplyAttack: {
       }, "true";
     }, {
       InvokeBuffEvent: "PreApplyAttack_Base", $arg0;
-      Coalesce: ;
+      Coalesce;
       InvokeBuffEvent: "PreApplyAttack_Extra", $arg0;
-      Coalesce: ;
+      Coalesce;
       sev: "_attack", {
         AttackFormula: {
           GetRefEvtVar: "_type";

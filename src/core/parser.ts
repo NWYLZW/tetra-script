@@ -98,7 +98,8 @@ class CommandDeclare {
       childStr += ch;
     };
     const dealVar = (ch, isEnd) => {
-      if (isEnd) defaultFun(ch);
+      if (isEnd || (!isVar() && ch == ','))
+        defaultFun(ch);
       if (childStr === '') return;
       if (isVar()) {
         if (childStr[0] === '"' || childStr[0] == "'") {
