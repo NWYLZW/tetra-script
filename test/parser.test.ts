@@ -9,20 +9,34 @@ import Parser from "../src/core/parser";
 import {readFileSync} from "fs";
 
 describe('Test simple parser suite:', () => {
-  test('test-simple-compile', () => {
+  test('test-simple-arg-compile', () => {
     const strs = {
-      'none: a;':
-        'none: "a";',
-      'none: a':
-        'none: "a";',
-      'none: 1;':
-        'none: 1;',
-      'none: $a;':
-        'none: $a;',
-      'none: "{a;}"':
-        'none: "{a;}";',
+      'none: a': 'none: "a";',
+      'none: a;': 'none: "a";',
+      'none: 1;': 'none: 1;',
+      'none: $a;': 'none: $a;',
+      'none: "{a;}"': 'none: "{a;}";',
+    }
+    for (let str in strs) {
+      const compileStr = Parser.compile(str).toString(2)
+      expect(compileStr).toBe(strs[str]);
+    }
+  })
+
+  test('test-simple-args-compile', () => {
+    const strs = {
       'SetVar: "{a;}", "hello world"':
-        'SetVar: "{a;}", "hello world";'
+        'SetVar: "{a;}", "hello world";',
+      'SetVar: abc, "hello world"':
+        'SetVar: "abc", "hello world";',
+      'SetVar: abc, $1':
+        'SetVar: "abc", $1;',
+      'SetVar: abc,$1':
+        'SetVar: "abc", $1;',
+      'evt.PreApplyAttack: {InvokeBuffEvent:PreApplyAttack_Begin,$arg0;}':
+        'evt.PreApplyAttack: {\n' +
+        '  InvokeBuffEvent: "PreApplyAttack_Begin", $arg0;\n' +
+        '};'
     }
     for (let str in strs) {
       const compileStr = Parser.compile(str).toString(2)
