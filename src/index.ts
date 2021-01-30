@@ -1,3 +1,3 @@
-import Parser from "tetra-script/core/parser";
+import Parser from "./core/parser";
 
 export default Parser;
