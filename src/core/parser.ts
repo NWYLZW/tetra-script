@@ -63,20 +63,24 @@ class CommandDeclare {
   }
 
   toString(indent: number) {
-    let childStr = '';
-    this.children.forEach((child, index) => {
-      if (child instanceof VarDeclare) {
-        childStr += `${child.toString()}`;
-      } else {
-        childStr += '{\n' +
-          child.toString(indent) +
-          '\n' + ' '.repeat(indent * (this.deep - 1)) + '}';
-      }
-      if (index !== this.children.length - 1) {
-        childStr += ', '
-      }
-    });
-    return `${this.name}: ${childStr};`;
+    if (this.children.length > 0) {
+      let childStr = '';
+      this.children.forEach((child, index) => {
+        if (child instanceof VarDeclare) {
+          childStr += `${child.toString()}`;
+        } else {
+          childStr += '{\n' +
+            child.toString(indent) +
+            '\n' + ' '.repeat(indent * (this.deep - 1)) + '}';
+        }
+        if (index !== this.children.length - 1) {
+          childStr += ', '
+        }
+      });
+      return `${this.name}: ${childStr};`;
+    } else {
+      return `${this.name};`;
+    }
   }
 
   static compile(str: String, deep: number = 0): Array<ModuleDeclare | VarDeclare> {
@@ -158,10 +162,13 @@ class CommandDeclare {
 
 class ModuleDeclare {
   deep: number;
-  commandDeclares = new Array<CommandDeclare>();
+  commandDeclares: Array<CommandDeclare>;
 
-  constructor(deep: number = 0) {
+  constructor(
+    deep: number = 0, commandDeclares: Array<CommandDeclare> = []
+  ) {
     this.deep = deep;
+    this.commandDeclares = commandDeclares;
   }
 
   push(...items: CommandDeclare[]) {
@@ -184,6 +191,7 @@ class ModuleDeclare {
       , stack: Array<String> = [];
     let name = '', content = '', curCommand: CommandDeclare | undefined = undefined;
 
+    let quotationMarks = false, isChild = false;
     const defaultFun = (char) => {
       if (curCommand === undefined) {
         name += char;
@@ -191,7 +199,13 @@ class ModuleDeclare {
         content += char;
       }
     };
-    let quotationMarks = false, isChild = false;
+    const createCurCommand = (): CommandDeclare => {
+      isChild = true;
+      const command = new CommandDeclare(deep + 1, name);
+      root.push(command);
+      name = '';
+      return command;
+    }
 
     for (let i = 0; i < str.length; i++) {
       const ch = str[i];
@@ -202,9 +216,13 @@ class ModuleDeclare {
           || (ch === '}' && stack.length === 1)
         ) {
           if (ch !== ';' && ch !== '\n') defaultFun(ch);
-          curCommand?.appendChildren(
-            CommandDeclare.compile(content, deep + 1)
-          );
+
+          if (curCommand === undefined) {
+            curCommand = createCurCommand();
+          }
+          if (content !== '') {
+            curCommand.appendChildren(CommandDeclare.compile(content, deep + 1));
+          }
           content = '';
           isChild = false;
           curCommand = undefined;
@@ -232,10 +250,7 @@ class ModuleDeclare {
           if (isChild) {
             defaultFun(ch);
           } else {
-            isChild = true;
-            curCommand = new CommandDeclare(deep + 1, name);
-            root.push(curCommand);
-            name = '';
+            curCommand = createCurCommand();
           }
           break;
         default:
