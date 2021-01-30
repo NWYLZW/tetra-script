@@ -1,0 +1,104 @@
+tgt.TakeDamage: {
+  RandomIntNum: 4, 7;
+};
+Foreach: {
+  user.SearchCharacters: {
+    tmt;
+  };
+}, {
+  ctx0.AddBuff: "司书6", 1;
+  ctx0.AddBuff: "混乱0", 3;
+};
+DelayRun: 0.2, {
+  Chance: "75%", {
+    tgt.TakeDamage: {
+      RandomIntNum: 4, 7;
+    };
+    Foreach: {
+      user.SearchCharacters: {
+        tmt;
+      };
+    }, {
+      ctx0.AddBuff: "司书6", 1;
+      ctx0.AddBuff: "混乱0", 3;
+    };
+    DelayRun: 0.2, {
+      Chance: "75%", {
+        tgt.TakeDamage: {
+          RandomIntNum: 4, 7;
+        };
+        Foreach: {
+          user.SearchCharacters: {
+            tmt;
+          };
+        }, {
+          ctx0.AddBuff: "司书6", 1;
+          ctx0.AddBuff: "混乱0", 3;
+        };
+      };
+    };
+  };
+};
+tgt.TakeDamage: {
+  RandomIntNum: 3, 6;
+};
+Foreach: {
+  user.SearchCharacters: {
+    tmt;
+  };
+}, {
+  ctx0.AddBuff: "司书6", 1;
+  ctx0.AddBuff: "混乱0", 3;
+};
+DelayRun: 0.2, {
+  Chance: "60%", {
+    tgt.TakeDamage: {
+      RandomIntNum: 3, 6;
+    };
+    Foreach: {
+      user.SearchCharacters: {
+        tmt;
+      };
+    }, {
+      ctx0.AddBuff: "司书6", 1;
+      ctx0.AddBuff: "混乱0", 3;
+    };
+    DelayRun: 0.2, {
+      Chance: "60%", {
+        tgt.TakeDamage: {
+          RandomIntNum: 3, 6;
+        };
+        Foreach: {
+          user.SearchCharacters: {
+            tmt;
+          };
+        }, {
+          ctx0.AddBuff: "司书6", 1;
+          ctx0.AddBuff: "混乱0", 3;
+        };
+      };
+    };
+  };
+};
+tgt.TakeDamage: {
+  RandomIntNum: 4, 8;
+};
+Foreach: {
+  user.SearchCharacters: {
+    tmt;
+  };
+}, {
+  ctx0.AddBuff: "司书6", 1;
+  ctx0.AddBuff: "混乱0", 3;
+};
+If: {
+  $tgt.hp<=0;
+}, {
+  Foreach: {
+    user.SearchCharacters: {
+      tmt;
+    };
+  }, {
+    ctx0.AddBuff: "司书6", 2;
+  };
+};
