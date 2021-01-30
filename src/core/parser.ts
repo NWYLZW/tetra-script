@@ -267,7 +267,10 @@ class ModuleDeclare {
 
 export default class Parser {
   static compile(str: String, deep: number = 0): ModuleDeclare {
-    return ModuleDeclare.compile(str);
+    if (str[str.length - 1] === '\n') {
+      str = str.slice(0, str.length - 1);
+    }
+    return ModuleDeclare.compile(str, deep);
   }
 }
 

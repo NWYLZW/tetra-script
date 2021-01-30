@@ -11,9 +11,9 @@ evt.PreApplyAttack: {
       }, "true";
     }, {
       ivkevt: "PreApplyAttack_Base", $arg0;
-      Coalesce: ;
+      Coalesce;
       ivkevt: "PreApplyAttack_Extra", $arg0;
-      Coalesce: ;
+      Coalesce;
       sev: "_attack", {
         AttackFormula: {
           grev: "_type";
@@ -41,11 +41,12 @@ evt.PreApplyAttack: {
         }, "true";
       }, {
         ivkevt: "PreTakeAttack_Base", $arg0;
-        Coalesce: ;
+        Coalesce;
         ivkevt: "PreTakeAttack_Extra", $arg0;
-        Coalesce: ;
+        Coalesce;
         srev: "_defence", {
           DefenceFormula: {
+            grev._type;
           };
           srev: "_damage", {
             DamageFormula: {

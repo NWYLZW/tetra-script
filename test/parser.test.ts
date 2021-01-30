@@ -48,7 +48,23 @@ describe('Test simple parser suite:', () => {
     const strs = {
       'none1: "temp1";none2: "temp2";':
         'none1: "temp1";\n' +
-        'none2: "temp2";'
+        'none2: "temp2";',
+      'a: {b;};a: "temp2";':
+        'a: {\n' +
+        '  b;\n' +
+        '};\n' +
+        'a: "temp2";',
+      'a: {b;};a: {b;};':
+        'a: {\n' +
+        '  b;\n' +
+        '};\n' +
+        'a: {\n' +
+        '  b;\n' +
+        '};',
+      'a: {b;};\n':
+        'a: {\n' +
+        '  b;\n' +
+        '};'
     }
     for (let str in strs) {
       const compileResult = Parser.compile(str);
@@ -122,9 +138,11 @@ describe('Test parser suite:', () => {
       'test/.data/test-long-3'
     ]
     files.forEach(file => {
-      console.log(Parser.compile(
+      expect(Parser.compile(
         readFileSync(`${file}.min.tetraScript`, 'utf8')
-      ).toString(2));
+      ).toString(2) + '\n').toBe(
+        readFileSync(`${file}.tetraScript`, 'utf8')
+      );
     });
   })
 })
