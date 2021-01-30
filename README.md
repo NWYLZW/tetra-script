@@ -17,3 +17,16 @@
 </p>
 
 ## 原石计划脚本
+
+### 如何使用
+
+* 如果你拥有nodejs环境, 可以使用如下指令安装
+```shell script
+npm init
+
+npm i tetra-script
+# or
+yarn add tetra-script
+```
+
+* 如果你想试试在网页端使用
