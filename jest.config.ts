@@ -9,8 +9,9 @@ import path = require("path");
 
 const config: Config.InitialOptions = {
   verbose: true,
-  "moduleNameMapper": {
-    '@/(.*)': path.join(__dirname, './src/$1')
+  moduleNameMapper: {
+    'tetra-script/(.*)': path.join(__dirname, './src/$1'),
+    'tetra-script': path.join(__dirname, './src/index')
   },
   transform: {
     '^.+\\.tsx?$': 'ts-jest',

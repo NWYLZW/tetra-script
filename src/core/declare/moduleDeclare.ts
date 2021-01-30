@@ -4,7 +4,7 @@
  * @date   2021-01-31
  * @note   yijie 2021-01-31 Created the file moduleDeclare.js
  */
-import CommandDeclare from "@/core/declare/commandDeclare";
+import CommandDeclare from "tetra-script/core/declare/commandDeclare";
 
 export default class ModuleDeclare {
   deep: number;
