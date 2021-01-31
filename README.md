@@ -30,3 +30,5 @@ yarn add tetra-script
 ```
 
 * 如果你想试试在网页端使用
+
+  可以访问项目的[github pages](https://nwylzw.github.io/tetra-script/)
