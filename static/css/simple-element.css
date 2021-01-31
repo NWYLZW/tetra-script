@@ -1,0 +1,111 @@
+.s-ele-button {
+  margin: 0;
+  padding: 12px 20px;
+
+  line-height: 1;
+  cursor: pointer;
+  text-align: center;
+  box-sizing: border-box;
+  outline: none;
+  user-select: none;
+  border-radius: 4px;
+
+  color: #409eff;
+  font-size: 14px;
+  font-weight: 500;
+
+  background: #ecf5ff;
+  border: 1px solid #b3d8ff;
+
+  transition: .1s;
+}
+
+.s-ele-button + .s-ele-button {
+  margin-left: 10px;
+}
+
+.s-ele-button:hover {
+  color: #ffffff;
+  background: #409eff;
+  border: 1px solid #b3d8ff;
+  box-shadow: 0 0 10px #ababab;
+}
+
+[tooltip] {
+  position: relative;
+}
+[tooltip]::before {
+  content: "";
+  position: absolute;
+  border-width: 4px 6px 0 6px;
+  border-style: solid;
+  border-color: transparent;
+  border-top-color: gray;
+  z-index: 99;
+  opacity: 0;
+
+  top: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: "Microsoft YaHei UI", serif;
+}
+[tooltip]::after {
+  content: attr(tooltip);
+  position: absolute;
+  background: gray;
+  text-align: center;
+  color: white;
+  border-radius: 5px;
+  padding: 4px 2px;
+  min-width: 80px;
+  pointer-events: none;
+  z-index: 99;
+  opacity: 0;
+
+  left: 50%;
+  top: -5px;
+  transform: translateX(-50%) translateY(-100%);
+  font-family: "Microsoft YaHei UI", serif;
+}
+[tooltip]:hover::after, [tooltip]:hover::before {
+  opacity: 1;
+}
+
+[tooltip][position='right']::before {
+  top: 50%;
+  left: 100%;
+  margin-left: -3px;
+  transform: translateY(-50%) rotate(90deg);
+}
+[tooltip][position='right']::after {
+  top: 50%;
+  left: 100%;
+  margin-left: 5px;
+  transform: translateY(-50%);
+}
+
+[tooltip][position='left']::before {
+  top: 50%;
+  left: 0;
+  margin-left: -9px;
+  transform: translateY(-50%) rotate(-90deg);
+}
+[tooltip][position='left']::after {
+  top: 50%;
+  left: 0;
+  margin-left: -5px;
+  transform: translateY(-50%) translateX(-100%);
+}
+
+[tooltip][position='bottom']::before {
+  top: 100%;
+  left: 50%;
+  margin-top: 1px;
+  transform: translatex(-50%) rotate(180deg);
+}
+[tooltip][position='bottom']::after {
+  top: 100%;
+  left: 50%;
+  margin-top: 5px;
+  transform: translatex(-50%);
+}

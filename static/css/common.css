@@ -1,0 +1,22 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+@font-face {
+  font-family: 'tetra-script';  /* project id 2358662 */
+  src: url('//at.alicdn.com/t/font_2358662_iy1c1xy1bu.eot');
+  src: url('//at.alicdn.com/t/font_2358662_iy1c1xy1bu.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_2358662_iy1c1xy1bu.woff2') format('woff2'),
+  url('//at.alicdn.com/t/font_2358662_iy1c1xy1bu.woff') format('woff'),
+  url('//at.alicdn.com/t/font_2358662_iy1c1xy1bu.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_2358662_iy1c1xy1bu.svg#tetra-script') format('svg');
+}
+.tetra-script-icon {
+  font-family: 'tetra-script', serif;
+  font-size: 16px;
+}
+
+html, body {
+  width: 100%; height: 100%;
+}

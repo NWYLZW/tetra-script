@@ -5,25 +5,36 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Tetra Script Transform</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" media="screen" href="./static/css/common.css"/>
   <link rel="stylesheet" type="text/css" media="screen" href="./static/css/index.css"/>
+  <link rel="stylesheet" type="text/css" media="screen" href="./static/css/simple-element.css"/>
 </head>
 <body>
-<div class="main">
-  <div class="input">
-    <h1>tetraScript:</h1>
-    <textarea
-      id="inputTextArea"></textarea>
+  <div class="main">
+    <div class="head-btns">
+      <button id="formatBtn"
+              tooltip="格式化代码(Ctrl + Shift + f)" position="bottom"
+              class="s-ele-button tetra-script-icon">
+        &#xe902;
+      </button>
+      <button id="lightThemeBtn"
+              tooltip="日间主题" position="bottom"
+              class="s-ele-button tetra-script-icon">
+        &#xe67b;
+      </button>
+      <button id="darkThemeBtn"
+              tooltip="夜间主题" position="bottom"
+              class="s-ele-button tetra-script-icon">
+        &#xe6b8;
+      </button>
+      <button id="settingBtn"
+              tooltip="设置" position="bottom"
+              class="s-ele-button tetra-script-icon">
+        &#xe877;
+      </button>
+    </div>
+    <pre id="editor"></pre>
   </div>
-  <div class="center-btns">
-    <button id="formatBtn">格式化 <i class="ele-py-icon">&#xe66c;</i></button>
-  </div>
-  <div class="output">
-    <h1>格式化结果:</h1>
-    <textarea
-      id="outputTextArea"
-      readonly></textarea>
-  </div>
-</div>
+  <script data-main="./static/js/index" src="https://cdn.bootcdn.net/ajax/libs/require.js/2.3.6/require.js"></script>
 </body>
-<script data-main="./static/js/index" src="https://cdn.bootcdn.net/ajax/libs/require.js/2.3.6/require.js"></script>
 </html>

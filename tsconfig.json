@@ -6,7 +6,7 @@
     "removeComments": true,
 
     "esModuleInterop": true,
-    "outDir": "dist",
+    "outDir": "static/js/lib/tetra-script",
     "strict": true,
     "noImplicitAny": false,
     "moduleResolution": "node",
