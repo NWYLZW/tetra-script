@@ -1,7 +1,10 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "module": "commonjs",
+    "module": "amd",
+    "target": "es5",
+    "allowJs": true,
+    "removeComments": true,
+
     "esModuleInterop": true,
     "outDir": "dist",
     "strict": true,
