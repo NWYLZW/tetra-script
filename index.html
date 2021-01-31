@@ -3,17 +3,27 @@
 <head>
   <meta charset="utf-8"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Github Page demo</title>
+  <title>Tetra Script Transform</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" type="text/css" media="screen" href="./static/css/index.css"/>
-  <script src="https://cdn.bootcdn.net/ajax/libs/require.js/2.3.6/require.js"></script>
-  <script src="dist/index.js"></script>
 </head>
 <body>
-  <div id="main-content">
+  <div class="main">
+    <div class="input">
+      <h1>tetraScript:</h1>
+      <textarea
+        id="inputTextArea"></textarea>
+    </div>
+    <div class="center-btns">
+      <button id="formatBtn">格式化 <i class="ele-py-icon">&#xe66c;</i></button>
+    </div>
+    <div class="output">
+      <h1>格式化结果:</h1>
+      <textarea
+        id="outputTextArea"
+        readonly></textarea>
+    </div>
   </div>
 </body>
-<script>
-  document.getElementById('main-content').innerHTML = 'Hello, github pages :)';
-</script>
+<script data-main="./static/js/index" src="https://cdn.bootcdn.net/ajax/libs/require.js/2.3.6/require.js"></script>
 </html>

@@ -1,5 +1,82 @@
-#main-content {
-    font-size: 36px;
-    font-weight: bold;
-    padding: 16px;
+* {margin: 0; padding: 0;}
+
+@font-face {
+  font-family: 'ele-py';  /* project id 2305790 */
+  src: url('//at.alicdn.com/t/font_2305790_ulhebe7a05b.eot');
+  src: url('//at.alicdn.com/t/font_2305790_ulhebe7a05b.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_2305790_ulhebe7a05b.woff2') format('woff2'),
+  url('//at.alicdn.com/t/font_2305790_ulhebe7a05b.woff') format('woff'),
+  url('//at.alicdn.com/t/font_2305790_ulhebe7a05b.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_2305790_ulhebe7a05b.svg#ele-py') format('svg');
+}
+.ele-py-icon {
+  font-family: 'ele-py', serif;
+}
+
+.main {
+  width: calc(100% - 20px);
+  padding: 10px;
+}
+.input, .output {
+  float: left;
+  position: relative;
+  padding: 10px;
+  margin-left: 20px;
+  margin-right: 20px;
+  height: 100%;
+}
+.center-btns {
+  float: left;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 510px;
+}
+
+.center-btns button {
+  margin: 0;
+  padding: 12px 20px;
+
+  line-height: 1;
+  cursor: pointer;
+  text-align: center;
+  box-sizing: border-box;
+  outline: none;
+  user-select: none;
+  border-radius: 4px;
+
+  color: #409eff;
+  font-size: 14px;
+  font-weight: 500;
+
+  background: #ecf5ff;
+  border: 1px solid #b3d8ff;
+
+  transition: .1s;
+}
+.center-btns button:hover {
+  color: #ffffff;
+  background: #409eff;
+  border: 1px solid #b3d8ff;
+  box-shadow: 0 0 10px #ababab;
+}
+
+.input h1, .output h1 {
+  margin-bottom: 20px;
+}
+.input textarea, .output textarea {
+  min-width: 300px; min-height: 400px;
+  max-width: 300px;
+  padding: 10px;
+
+  outline: none;
+  border: 2px solid gray;
+  border-radius: 5px;
+
+  font-family: 'Microsoft YaHei UI', serif;
+  font-size: 15px;
+  transition: .3s;
+}
+.input textarea:focus, .output textarea:focus {
+  border-color: #409eff;
 }
