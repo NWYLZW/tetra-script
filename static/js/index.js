@@ -10,6 +10,7 @@ require(['../../dist/index'], function (tetraScript) {
   formatBtn.addEventListener(
     "click", function () {
       var content = inputTextArea.value;
-      outputTextArea.value = Parser.compile(content);
+      var compileStr = Parser.compile(content);
+      outputTextArea.value = compileStr.toString(2);
     })
 });
