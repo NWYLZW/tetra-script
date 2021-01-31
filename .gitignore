@@ -5,9 +5,6 @@
 # dependencies
 node_modules
 
-# build
-dist
-
 # log and temp file
 *.log
 *.temp
