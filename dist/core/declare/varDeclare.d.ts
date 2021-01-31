@@ -1,9 +1,3 @@
-/**
- * @desc   varDeclare.js
- * @author yijie
- * @date   2021-01-31
- * @note   yijie 2021-01-31 Created the file varDeclare.js
- */
 declare enum VarDeclareType {
     NUMBER = 0,
     STRING = 1,
