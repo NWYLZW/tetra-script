@@ -4,9 +4,9 @@
  * @date   2021-01-30
  * @note   yijie 2021-01-30 Created the file test-Parser.js
  */
-import {describe, test, it} from '@jest/globals';
+import {describe, test} from '@jest/globals';
 import {readFileSync} from "fs";
-import Parser from "tetra-script";
+import {Parser} from "tetra-script";
 
 describe('Test simple parser suite:', () => {
   test('test-simple-arg-compile', () => {
@@ -20,6 +20,17 @@ describe('Test simple parser suite:', () => {
     for (let str in strs) {
       const compileStr = Parser.compile(str).toString(2)
       expect(compileStr).toBe(strs[str]);
+    }
+  })
+
+  test('test-simple-much-wrap', () => {
+    const strs = {
+      'none1: "temp1";\n\n\n\n\n':
+        'none1: "temp1";'
+    }
+    for (let str in strs) {
+      const compileResult = Parser.compile(str);
+      expect(compileResult.toString(2)).toBe(strs[str]);
     }
   })
 
