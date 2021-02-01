@@ -8,9 +8,7 @@ import { ModuleDeclare } from "./declare";
 
 export default class Parser {
   static compile(str: String, deep: number = 0): ModuleDeclare {
-    if (str[str.length - 1] === '\n') {
-      str = str.slice(0, str.length - 1);
-    }
+    str = str.trim();
     return ModuleDeclare.compile(str, deep);
   }
 }
