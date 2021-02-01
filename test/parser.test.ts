@@ -187,4 +187,36 @@ describe('Test characteristic parser suite:', () => {
       expect(compileResult.toString(2)).toBe(strs[str]);
     }
   })
+
+  test('test-has-comment', () => {
+    const strs = {
+      '// test\nSetVar;':
+        '// test\n' +
+        'SetVar;',
+      'SetVar;\n// test':
+        'SetVar;\n' +
+        '// test',
+      'SetVar;\n// test\nSetVar;':
+        'SetVar;\n' +
+        '// test\n' +
+        'SetVar;',
+      'SetVar;// test\nSetVar;':
+        'SetVar;\n' +
+        '// test\n' +
+        'SetVar;',
+      'SetVar: {\n// test\nGetVar: "temp";}, "123";':
+        'SetVar: {\n' +
+        '  // test\n' +
+        '  GetVar: "temp";\n' +
+        '}, 123;',
+      // 'GetVar: // test\n':
+      //   'GetVar: // test\n;',
+      // 'SetVar: x, GetVar: // test\n;':
+      //   'SetVar: "x", GetVar: // test\n;'
+    }
+    for (let str in strs) {
+      const compileResult = Parser.compile(str);
+      expect(compileResult.toString(2)).toBe(strs[str]);
+    }
+  })
 })
