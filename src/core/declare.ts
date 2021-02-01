@@ -37,7 +37,7 @@ class VarDeclare {
   }
 }
 
-class Declare {
+class CommandDeclare {
   public deep: number = -1;
   public name: String = '';
   public children: Array<ModuleDeclare | VarDeclare> = [];
@@ -156,16 +156,16 @@ class Declare {
 
 class ModuleDeclare {
   deep: number;
-  commandDeclares: Array<Declare>;
+  commandDeclares: Array<CommandDeclare>;
 
   constructor(
-    deep: number = 0, commandDeclares: Array<Declare> = []
+    deep: number = 0, commandDeclares: Array<CommandDeclare> = []
   ) {
     this.deep = deep;
     this.commandDeclares = commandDeclares;
   }
 
-  push(...items: Declare[]) {
+  push(...items: CommandDeclare[]) {
     this.commandDeclares.push(...items)
   }
 
@@ -183,7 +183,7 @@ class ModuleDeclare {
     const
       root: ModuleDeclare = new ModuleDeclare(deep)
       , stack: Array<String> = [];
-    let name = '', content = '', curCommand: Declare | undefined = undefined;
+    let name = '', content = '', curCommand: CommandDeclare | undefined = undefined;
 
     let quotationMarks = false, isChild = false;
     const defaultFun = (char) => {
@@ -193,9 +193,9 @@ class ModuleDeclare {
         content += char;
       }
     };
-    const createCurCommand = (): Declare => {
+    const createCurCommand = (): CommandDeclare => {
       isChild = true;
-      const command = new Declare(deep + 1, name);
+      const command = new CommandDeclare(deep + 1, name);
       root.push(command);
       name = '';
       return command;
@@ -215,7 +215,7 @@ class ModuleDeclare {
             curCommand = createCurCommand();
           }
           if (content !== '') {
-            curCommand.appendChildren(Declare.compile(content, deep + 1));
+            curCommand.appendChildren(CommandDeclare.compile(content, deep + 1));
           }
           content = '';
           isChild = false;
@@ -259,5 +259,5 @@ class ModuleDeclare {
 }
 
 export {
-  VarDeclareType, VarDeclare, Declare, ModuleDeclare
+  VarDeclareType, VarDeclare, CommandDeclare, ModuleDeclare
 }
