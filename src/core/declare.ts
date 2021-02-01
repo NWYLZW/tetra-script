@@ -37,6 +37,18 @@ class VarDeclare {
   }
 }
 
+class CommentDeclare {
+  public content: string
+
+  constructor(content: string = '') {
+    this.content = content;
+  }
+
+  toString(indent: number): string {
+    return `//${this.content}`;
+  }
+}
+
 class CommandDeclare {
   public deep: number = -1;
   public name: String = '';
@@ -55,7 +67,7 @@ class CommandDeclare {
     this.children.push(...children);
   }
 
-  toString(indent: number) {
+  toString(indent: number): string {
     if (this.children.length > 0) {
       let childStr = '';
       this.children.forEach((child, index) => {
@@ -143,10 +155,6 @@ class CommandDeclare {
           defaultFun(ch);
         }
       } else {
-        // 不是变量跳过
-        if (ch === ' ' && !isVar() && !inChild()) {
-          break;
-        }
         defaultFun(ch);
       }
     }
@@ -156,22 +164,22 @@ class CommandDeclare {
 
 class ModuleDeclare {
   deep: number;
-  commandDeclares: Array<CommandDeclare>;
+  childDeclares: Array<CommandDeclare | CommentDeclare>;
 
   constructor(
-    deep: number = 0, commandDeclares: Array<CommandDeclare> = []
+    deep: number = 0, commandDeclares: Array<CommandDeclare | CommentDeclare> = []
   ) {
     this.deep = deep;
-    this.commandDeclares = commandDeclares;
+    this.childDeclares = commandDeclares;
   }
 
-  push(...items: CommandDeclare[]) {
-    this.commandDeclares.push(...items)
+  push(...items: Array<CommandDeclare | CommentDeclare>) {
+    this.childDeclares.push(...items)
   }
 
   toString(indent: number) {
     const commandDeclaresLines: string[] = []
-    this.commandDeclares.forEach(commandDeclare => {
+    this.childDeclares.forEach(commandDeclare => {
       commandDeclaresLines.push(
         ' '.repeat(indent * this.deep) + commandDeclare.toString(indent)
       );
@@ -226,6 +234,7 @@ class ModuleDeclare {
       switch (ch) {
         case '\n':
         case '\r':
+          if (isChild) defaultFun(ch);
           break;
 
         case '{':
