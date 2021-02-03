@@ -1,0 +1,205 @@
+evt.CreateDeckCardForever: {
+  If: {
+    $arg0=={ArgIsCard: "475}";
+  }, {
+    CreateDeckCardForever: 478;
+  };
+};
+//默认暴击率
+mainPlayerCha.SetDataVar: "Baoji", 0.05;
+//实现暴击
+evt.PreApplyDamage: {
+  SenderCardHasTag: "Gongji";
+}, {
+  Chance: {
+    GetDataVar: "Baoji";
+  }, {
+    SerialRun: {
+      CreaserMultiplyNext: "ApplyDamage", 1.5;
+    };
+  };
+};
+//鬼人BUFF影响暴击率
+evt.RemoveBuff: {
+  If: {
+    $arg0=={ArgIsCard: "499}";
+  }, {
+    PlusDataVar: "Baoji", -0.02;
+  };
+};
+evt.PreAddBuff: {
+  If: {
+    $arg0=={ArgIsCard: "499}";
+  }, {
+    PlusDataVar: "Baoji", 0.02;
+  };
+};
+evt.PreAddBuff: {
+  If: {
+    $arg0=={ArgIsCard: "502}";
+  }, {
+    PlusDataVar: "Baoji", 0.3;
+  };
+};
+evt.RemoveBuff: {
+  If: {
+    $arg0=={ArgIsCard: "502}";
+  }, {
+    PlusDataVar: "Baoji", -0.3;
+  };
+};
+mainPlayerCha.SetDataVar: "Zhenf", "true";
+mainPlayerCha.SetDataVar: "Huo", 0;
+mainPlayerCha.SetDataVar: "HuoG", 0;
+SetVar: "Qiren", 0;
+evt.PreAddBuff: {
+  If: {
+    $arg0=={ArgIsCard: "547}";
+  }, {
+    SetActiveUIObj: {
+      get_uiWorldHudRoot:;
+    }, 0;
+  };
+};
+evt.RemoveBuff: {
+  If: {
+    $arg0=={ArgIsCard: "547}";
+  }, {
+    SetActiveUIObj: {
+      get_uiWorldHudRoot:;
+    }, "True";
+  };
+};
+//更换装备顺便移除技能卡
+evt.RemoveBuff: {
+  If: {
+    ArgCardHasTag: "Quantou";
+  }, {
+    DestroyCard: 667;
+    DestroyCard: 668;
+    DestroyCard: 669;
+  };
+};
+evt.RemoveBuff: {
+  If: {
+    ArgCardHasTag: "Shuangdao";
+  }, {
+    Foreach: {
+      SearchCards: {
+        list: "Deck";
+        list: "Discarded";
+        list: "Buff";
+        list: "Hand";
+        tag: "ShuangdaoG";
+      };
+    }, {
+      DestroyCardForeverIns: $ctx0;
+      DestroyEquipmentForever: 498;
+      RemoveAllBuffsByTag: "ShuangdaoG", 999;
+    };
+  };
+};
+evt.RemoveBuff: {
+  If: {
+    ArgCardHasTag: "Taidao";
+  }, {
+    Foreach: {
+      SearchCards: {
+        list: "Deck";
+        list: "Discarded";
+        list: "Buff";
+        list: "Hand";
+        tag: "TaidaoG";
+      };
+    }, {
+      DestroyCardForeverIns: $ctx0;
+      DestroyEquipmentForever: "TDao12";
+      RemoveAllBuffsByTag: "TaidaoG", 999;
+    };
+  };
+};
+evt.RemoveBuff: {
+  If: {
+    ArgCardHasTag: "Gong";
+  }, {
+    Foreach: {
+      SearchCards: {
+        list: "Deck";
+        list: "Discarded";
+        list: "Buff";
+        list: "Hand";
+        tag: "GongG";
+      };
+    }, {
+      DestroyCardForeverIns: $ctx0;
+      RemoveAllBuffsByTag: "GongG", 999;
+    };
+  };
+};
+//////////////////////
+evt.CreateDeckCardForever: {
+  IfNot: {
+    mainPlayerCha.GetDataVar: "Tiaohe";
+  }, {
+    If: {
+      $arg0=={ArgIsCard: "682}";
+    }, {
+      CreateDeckCardForever: 685;
+      mainPlayerCha.SetDataVar: "Tiaohe", "True";
+    };
+  };
+};
+evt.PreDie: {
+  //天使祝福
+  If;
+};
+//调和配方
+evt.CreateDeckCardForever: {
+  IfNot: {
+    mainPlayerCha.GetDataVar: "Tiaohe2";
+  }, {
+    If: {
+      $arg0=={ArgIsCard: "749}";
+    }, {
+      CreateDeckCardForever: 750;
+      DestroyCardForever: 685;
+      mainPlayerCha.SetDataVar: "Tiaohe2", "True";
+    };
+  };
+};
+evt.CreateDeckCardForever: {
+  IfNot: {
+    mainPlayerCha.GetDataVar: "Tiaohe3";
+  }, {
+    If: {
+      $arg0=={ArgIsCard: "TiaoheG}";
+    }, {
+      CreateDeckCardForever: 4427;
+      DestroyCardForever: 750;
+      mainPlayerCha.SetDataVar: "Tiaohe3", "True";
+    };
+  };
+};
+//墨汁隐藏UI
+evt.PreAddBuff: {
+  If: {
+    $arg0=={ArgIsCard: "697}";
+  }, {
+    SetActiveUIObj: {
+      get_uiWorldHudRoot:;
+    }, 0;
+  };
+};
+evt.RemoveBuff: {
+  If: {
+    $arg0=={ArgIsCard: "697}";
+  }, {
+    SetActiveUIObj: {
+      get_uiWorldHudRoot:;
+    }, "True";
+  };
+};
+//闪光弹命中几率
+SetCha: "SGD", 0.25;
+Log: "变量生成";
+mainPlayerCha.SetDataVar: "Tili", 7;

@@ -7,6 +7,7 @@
 import {describe, test} from '@jest/globals';
 import {readFileSync} from "fs";
 import {Parser} from "tetra-script";
+import * as fs from "fs";
 
 describe('Test simple parser suite:', () => {
   test('test-simple-arg-compile', () => {
@@ -145,14 +146,21 @@ describe('Test parser suite:', () => {
     const files = [
       'test/.data/test-long-1',
       'test/.data/test-long-2',
-      'test/.data/test-long-3'
+      'test/.data/test-long-3',
+      'test/.data/test-long-4'
     ]
     files.forEach(file => {
-      expect(Parser.compile(
-        readFileSync(`${file}.min.tetraScript`, 'utf8')
-      ).toString(2) + '\n').toBe(
-        readFileSync(`${file}.tetraScript`, 'utf8')
-      );
+      if (fs.existsSync(`${file}.tetraScript`)) {
+        expect(Parser.compile(
+          readFileSync(`${file}.min.tetraScript`, 'utf8')
+        ).toString(2) + '\n').toBe(
+          readFileSync(`${file}.tetraScript`, 'utf8')
+        );
+      } else {
+        console.log(Parser.compile(
+          readFileSync(`${file}.min.tetraScript`, 'utf8')
+        ).toString(2));
+      }
     });
   })
 })
