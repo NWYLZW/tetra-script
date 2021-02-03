@@ -191,7 +191,8 @@ class ModuleDeclare {
     const
       root: ModuleDeclare = new ModuleDeclare(deep)
       , stack: Array<String> = [];
-    let name = '', content = '', curCommand: CommandDeclare | undefined = undefined;
+    let name = '', content = '', comment = ''
+      , curCommand: CommandDeclare | undefined = undefined;
 
     let quotationMarks = false, isChild = false;
     const defaultFun = (char) => {
@@ -209,9 +210,43 @@ class ModuleDeclare {
       return command;
     }
 
+    let
+      lineCommentLock = false;
     for (let i = 0; i < str.length; i++) {
       const ch = str[i];
       const isEnd = i === str.length - 1;
+
+      if (lineCommentLock) {
+        if (!isChild) {
+          if (ch === '\n' || isEnd) {
+            if (isEnd && ch !== '\n') {
+              comment += ch;
+            }
+            root.childDeclares.push(new CommentDeclare(comment));
+            lineCommentLock = false;
+            comment = '';
+          }
+          comment += ch;
+          continue;
+        } else {
+          if (ch === '\n' || isEnd) {
+            lineCommentLock = false;
+          }
+          defaultFun(ch);
+          continue;
+        }
+      }
+      if (!quotationMarks) {
+        if (i > 0 && ch === '/' && str[i - 1] === '/') {
+          lineCommentLock = true;
+          if (!isChild) {
+            name = name.slice(0, name.length - 1);
+            comment = '';
+            continue;
+          }
+        }
+      }
+
       if (ch === ';' || isEnd) {
         if (
           stack.length === 0
@@ -234,7 +269,7 @@ class ModuleDeclare {
       switch (ch) {
         case '\n':
         case '\r':
-          if (isChild) defaultFun(ch);
+          if (lineCommentLock) defaultFun(ch);
           break;
 
         case '{':
@@ -257,7 +292,7 @@ class ModuleDeclare {
           }
           break;
         default:
-          if (ch === ' ' && !quotationMarks) {
+          if (ch === ' ' && !quotationMarks && !lineCommentLock) {
             break;
           }
           defaultFun(ch);
