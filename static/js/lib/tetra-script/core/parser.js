@@ -6,9 +6,7 @@ define(["require", "exports", "./declare"], function (require, exports, declare_
         }
         Parser.compile = function (str, deep) {
             if (deep === void 0) { deep = 0; }
-            if (str[str.length - 1] === '\n') {
-                str = str.slice(0, str.length - 1);
-            }
+            str = str.trim();
             return declare_1.ModuleDeclare.compile(str, deep);
         };
         return Parser;

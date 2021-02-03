@@ -1,7 +1,7 @@
 define(["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.ModuleDeclare = exports.Declare = exports.VarDeclare = exports.VarDeclareType = void 0;
+    exports.ModuleDeclare = exports.CommandDeclare = exports.CommentDeclare = exports.VarDeclare = exports.VarDeclareType = void 0;
     var VarDeclareType;
     (function (VarDeclareType) {
         VarDeclareType[VarDeclareType["NUMBER"] = 0] = "NUMBER";
@@ -34,45 +34,72 @@ define(["require", "exports"], function (require, exports) {
         return VarDeclare;
     }());
     exports.VarDeclare = VarDeclare;
-    var Declare = (function () {
-        function Declare(deep, name) {
+    var CommentDeclare = (function () {
+        function CommentDeclare(content) {
+            if (content === void 0) { content = ''; }
+            this.content = content;
+        }
+        CommentDeclare.prototype.toString = function (indent) {
+            return "//" + this.content;
+        };
+        return CommentDeclare;
+    }());
+    exports.CommentDeclare = CommentDeclare;
+    var CommandDeclare = (function () {
+        function CommandDeclare(deep, name, option) {
+            if (option === void 0) { option = ''; }
             this.deep = -1;
             this.name = '';
+            this.option = '';
             this.children = [];
             this.deep = deep;
             this.name = name;
+            this.option = option;
         }
-        Declare.prototype.appendChild = function (child) {
+        CommandDeclare.prototype.appendChild = function (child) {
             this.children.push(child);
         };
-        Declare.prototype.appendChildren = function (children) {
+        CommandDeclare.prototype.appendChildren = function (children) {
             var _a;
             (_a = this.children).push.apply(_a, children);
         };
-        Declare.prototype.toString = function (indent) {
+        CommandDeclare.prototype.toString = function (indent) {
             var _this = this;
             if (this.children.length > 0) {
-                var childStr_1 = '';
+                var childStr_1 = '', childrenLF_1 = true;
+                if (this.option !== '') {
+                    childrenLF_1 = false;
+                }
                 this.children.forEach(function (child, index) {
                     if (child instanceof VarDeclare) {
                         childStr_1 += "" + child.toString();
                     }
                     else {
-                        childStr_1 += '{\n' +
-                            child.toString(indent) +
-                            '\n' + ' '.repeat(indent * (_this.deep - 1)) + '}';
+                        if (childrenLF_1) {
+                            childStr_1 += '{\n' +
+                                child.toString(indent) +
+                                '\n' + ' '.repeat(indent * (_this.deep - 1)) + '}';
+                        }
+                        else {
+                            childStr_1 += "{ " + child.toString(0) + " }";
+                        }
                     }
                     if (index !== _this.children.length - 1) {
                         childStr_1 += ', ';
                     }
                 });
-                return this.name + ": " + childStr_1 + ";";
+                if (this.option !== '') {
+                    return "" + this.name + this.option + childStr_1 + ";";
+                }
+                else {
+                    return this.name + ": " + childStr_1 + ";";
+                }
             }
             else {
                 return this.name + ";";
             }
         };
-        Declare.compile = function (str, deep) {
+        CommandDeclare.compile = function (str, deep) {
             if (deep === void 0) { deep = 0; }
             var compileDeclares = [];
             var stack = [];
@@ -134,23 +161,20 @@ define(["require", "exports"], function (require, exports) {
                     }
                 }
                 else {
-                    if (ch === ' ' && !isVar() && !inChild()) {
-                        break;
-                    }
                     defaultFun(ch);
                 }
             }
             return compileDeclares;
         };
-        return Declare;
+        return CommandDeclare;
     }());
-    exports.Declare = Declare;
+    exports.CommandDeclare = CommandDeclare;
     var ModuleDeclare = (function () {
         function ModuleDeclare(deep, commandDeclares) {
             if (deep === void 0) { deep = 0; }
             if (commandDeclares === void 0) { commandDeclares = []; }
             this.deep = deep;
-            this.commandDeclares = commandDeclares;
+            this.childDeclares = commandDeclares;
         }
         ModuleDeclare.prototype.push = function () {
             var _a;
@@ -158,12 +182,12 @@ define(["require", "exports"], function (require, exports) {
             for (var _i = 0; _i < arguments.length; _i++) {
                 items[_i] = arguments[_i];
             }
-            (_a = this.commandDeclares).push.apply(_a, items);
+            (_a = this.childDeclares).push.apply(_a, items);
         };
         ModuleDeclare.prototype.toString = function (indent) {
             var _this = this;
             var commandDeclaresLines = [];
-            this.commandDeclares.forEach(function (commandDeclare) {
+            this.childDeclares.forEach(function (commandDeclare) {
                 commandDeclaresLines.push(' '.repeat(indent * _this.deep) + commandDeclare.toString(indent));
             });
             return commandDeclaresLines.join('\n');
@@ -171,7 +195,10 @@ define(["require", "exports"], function (require, exports) {
         ModuleDeclare.compile = function (str, deep) {
             if (deep === void 0) { deep = 0; }
             var root = new ModuleDeclare(deep), stack = [];
-            var name = '', content = '', curCommand = undefined;
+            var options = [
+                '=', '<', '>', '!'
+            ];
+            var name = '', content = '', comment = '', curCommand = undefined;
             var quotationMarks = false, isChild = false;
             var defaultFun = function (char) {
                 if (curCommand === undefined) {
@@ -181,16 +208,49 @@ define(["require", "exports"], function (require, exports) {
                     content += char;
                 }
             };
-            var createCurCommand = function () {
+            var createCurCommand = function (option) {
+                if (option === void 0) { option = ''; }
                 isChild = true;
-                var command = new Declare(deep + 1, name);
+                var command = new CommandDeclare(deep + 1, name, option);
                 root.push(command);
                 name = '';
                 return command;
             };
+            var lineCommentLock = false;
             for (var i = 0; i < str.length; i++) {
                 var ch = str[i];
                 var isEnd = i === str.length - 1;
+                if (lineCommentLock) {
+                    if (!isChild) {
+                        if (ch === '\n' || isEnd) {
+                            if (isEnd && ch !== '\n') {
+                                comment += ch;
+                            }
+                            root.childDeclares.push(new CommentDeclare(comment));
+                            lineCommentLock = false;
+                            comment = '';
+                        }
+                        comment += ch;
+                        continue;
+                    }
+                    else {
+                        if (ch === '\n' || isEnd) {
+                            lineCommentLock = false;
+                        }
+                        defaultFun(ch);
+                        continue;
+                    }
+                }
+                if (!quotationMarks) {
+                    if (i > 0 && ch === '/' && str[i - 1] === '/') {
+                        lineCommentLock = true;
+                        if (!isChild) {
+                            name = name.slice(0, name.length - 1);
+                            comment = '';
+                            continue;
+                        }
+                    }
+                }
                 if (ch === ';' || isEnd) {
                     if (stack.length === 0
                         || (ch === '}' && stack.length === 1)) {
@@ -200,7 +260,7 @@ define(["require", "exports"], function (require, exports) {
                             curCommand = createCurCommand();
                         }
                         if (content !== '') {
-                            curCommand.appendChildren(Declare.compile(content, deep + 1));
+                            curCommand.appendChildren(CommandDeclare.compile(content, deep + 1));
                         }
                         content = '';
                         isChild = false;
@@ -211,6 +271,8 @@ define(["require", "exports"], function (require, exports) {
                 switch (ch) {
                     case '\n':
                     case '\r':
+                        if (lineCommentLock)
+                            defaultFun(ch);
                         break;
                     case '{':
                         stack.push('{');
@@ -224,6 +286,14 @@ define(["require", "exports"], function (require, exports) {
                         quotationMarks = !quotationMarks;
                         defaultFun(ch);
                         break;
+                    case '=':
+                        if (!isChild && i > 1 && options.indexOf(str[i - 1]) !== -1) {
+                            curCommand = createCurCommand(ch);
+                        }
+                        else {
+                            defaultFun(ch);
+                        }
+                        break;
                     case ':':
                         if (isChild) {
                             defaultFun(ch);
@@ -233,7 +303,7 @@ define(["require", "exports"], function (require, exports) {
                         }
                         break;
                     default:
-                        if (ch === ' ' && !quotationMarks) {
+                        if (ch === ' ' && !quotationMarks && !lineCommentLock) {
                             break;
                         }
                         defaultFun(ch);
