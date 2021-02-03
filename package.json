@@ -1,6 +1,6 @@
 {
   "name": "tetra-script",
-  "version": "1.1.5",
+  "version": "1.2.1",
   "description": "tetra task script deal.",
   "author": "yijie",
   "license": "Apache-2.0",
@@ -11,23 +11,37 @@
   "homepage": "https://github.com/NWYLZW/tetra-script#readme",
   "types": "./dist/index.d.ts",
   "main": "./dist/index.js",
+  "bin": {
+    "tetra-script": "./bin/tetra-script.js"
+  },
   "scripts": {
-    "build": "tsc",
-    "start": "node ./dist/index.js",
     "start:dev": "ts-node -r tsconfig-paths/register ./src/index.ts --files",
     "run-with-build": "yarn build && yarn start",
-    "test": "jest"
+    "test": "jest",
+    "build": "tsc",
+    "start": "node ./dist/index.js",
+    "pack-bin": "yarn build && pkg . --out-path=releases/"
   },
-  "dependencies": {
-    "recast": "^0.20.4"
+  "pkg": {
+    "scripts": [
+      "bin/**/*.js",
+      "dist/**/*.js"
+    ]
   },
   "engines": {
     "node": ">=10.0.0"
+  },
+  "dependencies": {
+    "commander": "^7.0.0",
+    "common-path": "^1.0.1",
+    "glob": "^7.1.6",
+    "recast": "^0.20.4"
   },
   "devDependencies": {
     "@types/jest": "^26.0.20",
     "@types/node": "^14.14.22",
     "jest": "^26.6.3",
+    "pkg": "^4.4.9",
     "ts-jest": "^26.5.0",
     "ts-node": "^9.1.1",
     "tsconfig-paths": "^3.9.0",

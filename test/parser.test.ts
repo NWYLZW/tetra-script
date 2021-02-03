@@ -144,10 +144,10 @@ describe('Test parser suite:', () => {
 
   test('test-long-compile', () => {
     const files = [
-      'test/.data/test-long-1',
-      'test/.data/test-long-2',
-      'test/.data/test-long-3',
-      'test/.data/test-long-4'
+      'test/.data/long/test-long-1',
+      'test/.data/long/test-long-2',
+      'test/.data/long/test-long-3',
+      'test/.data/long/test-long-4'
     ]
     files.forEach(file => {
       if (fs.existsSync(`${file}.tetraScript`)) {
