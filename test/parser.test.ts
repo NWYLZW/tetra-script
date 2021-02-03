@@ -196,6 +196,33 @@ describe('Test characteristic parser suite:', () => {
     }
   })
 
+  test('test-expression', () => {
+    const strs = {
+      'if: {$x==1} {log: "hello"};':
+        'if: {\n' +
+        '  $x==1;\n' +
+        '}, {\n' +
+        '  log: "hello";\n' +
+        '};',
+      'if: {$x=={ArgIsCard:697}} {log: "hello"};':
+        'if: {\n' +
+        '  $x=={ ArgIsCard: 697; };\n' +
+        '}, {\n' +
+        '  log: "hello";\n' +
+        '};',
+      'if: {$x<={ArgIsCard:697}} {log: "hello"};':
+        'if: {\n' +
+        '  $x<={ ArgIsCard: 697; };\n' +
+        '}, {\n' +
+        '  log: "hello";\n' +
+        '};',
+    }
+    for (let str in strs) {
+      const compileResult = Parser.compile(str);
+      expect(compileResult.toString(2)).toBe(strs[str]);
+    }
+  })
+
   test('test-has-comment', () => {
     const strs = {
       '// test\nSetVar;':

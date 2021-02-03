@@ -51,12 +51,14 @@ class CommentDeclare {
 
 class CommandDeclare {
   public deep: number = -1;
-  public name: String = '';
+  public name: string = '';
+  public option: string = '';
   public children: Array<ModuleDeclare | VarDeclare> = [];
 
-  constructor(deep: number, name: String) {
+  constructor(deep: number, name: string, option: string = '') {
     this.deep = deep;
     this.name = name;
+    this.option = option;
   }
 
   appendChild(child: ModuleDeclare | VarDeclare) {
@@ -69,20 +71,29 @@ class CommandDeclare {
 
   toString(indent: number): string {
     if (this.children.length > 0) {
-      let childStr = '';
+      let childStr = '', childrenLF = true;
+      if (this.option !== '') { childrenLF = false; }
       this.children.forEach((child, index) => {
         if (child instanceof VarDeclare) {
           childStr += `${child.toString()}`;
         } else {
-          childStr += '{\n' +
-            child.toString(indent) +
-            '\n' + ' '.repeat(indent * (this.deep - 1)) + '}';
+          if (childrenLF) {
+            childStr += '{\n' +
+              child.toString(indent) +
+              '\n' + ' '.repeat(indent * (this.deep - 1)) + '}';
+          } else {
+            childStr += `{ ${child.toString(0)} }`;
+          }
         }
         if (index !== this.children.length - 1) {
           childStr += ', '
         }
       });
-      return `${this.name}: ${childStr};`;
+      if (this.option !== '') {
+        return `${this.name}${this.option}${childStr};`;
+      } else {
+        return `${this.name}: ${childStr};`;
+      }
     } else {
       return `${this.name};`;
     }
@@ -191,6 +202,9 @@ class ModuleDeclare {
     const
       root: ModuleDeclare = new ModuleDeclare(deep)
       , stack: Array<String> = [];
+    const options = [
+      '=', '<', '>', '!'
+    ];
     let name = '', content = '', comment = ''
       , curCommand: CommandDeclare | undefined = undefined;
 
@@ -202,9 +216,9 @@ class ModuleDeclare {
         content += char;
       }
     };
-    const createCurCommand = (): CommandDeclare => {
+    const createCurCommand = (option: string = ''): CommandDeclare => {
       isChild = true;
-      const command = new CommandDeclare(deep + 1, name);
+      const command = new CommandDeclare(deep + 1, name, option);
       root.push(command);
       name = '';
       return command;
@@ -284,6 +298,13 @@ class ModuleDeclare {
           quotationMarks = !quotationMarks;
           defaultFun(ch);
           break;
+        case '=':
+          if (!isChild && i > 1 && options.indexOf(str[i - 1]) !== -1) {
+            curCommand = createCurCommand(ch);
+          } else {
+            defaultFun(ch);
+          }
+          break;
         case ':':
           if (isChild) {
             defaultFun(ch);
@@ -303,5 +324,5 @@ class ModuleDeclare {
 }
 
 export {
-  VarDeclareType, VarDeclare, CommandDeclare, ModuleDeclare
+  VarDeclareType, VarDeclare, CommentDeclare, CommandDeclare, ModuleDeclare
 }

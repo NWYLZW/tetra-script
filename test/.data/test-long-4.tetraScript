@@ -1,6 +1,6 @@
 evt.CreateDeckCardForever: {
   If: {
-    $arg0=={ArgIsCard: "475}";
+    $arg0=={ ArgIsCard: 475; };
   }, {
     CreateDeckCardForever: 478;
   };
@@ -22,28 +22,28 @@ evt.PreApplyDamage: {
 //鬼人BUFF影响暴击率
 evt.RemoveBuff: {
   If: {
-    $arg0=={ArgIsCard: "499}";
+    $arg0=={ ArgIsCard: 499; };
   }, {
     PlusDataVar: "Baoji", -0.02;
   };
 };
 evt.PreAddBuff: {
   If: {
-    $arg0=={ArgIsCard: "499}";
+    $arg0=={ ArgIsCard: 499; };
   }, {
     PlusDataVar: "Baoji", 0.02;
   };
 };
 evt.PreAddBuff: {
   If: {
-    $arg0=={ArgIsCard: "502}";
+    $arg0=={ ArgIsCard: 502; };
   }, {
     PlusDataVar: "Baoji", 0.3;
   };
 };
 evt.RemoveBuff: {
   If: {
-    $arg0=={ArgIsCard: "502}";
+    $arg0=={ ArgIsCard: 502; };
   }, {
     PlusDataVar: "Baoji", -0.3;
   };
@@ -54,7 +54,7 @@ mainPlayerCha.SetDataVar: "HuoG", 0;
 SetVar: "Qiren", 0;
 evt.PreAddBuff: {
   If: {
-    $arg0=={ArgIsCard: "547}";
+    $arg0=={ ArgIsCard: 547; };
   }, {
     SetActiveUIObj: {
       get_uiWorldHudRoot:;
@@ -63,7 +63,7 @@ evt.PreAddBuff: {
 };
 evt.RemoveBuff: {
   If: {
-    $arg0=={ArgIsCard: "547}";
+    $arg0=={ ArgIsCard: 547; };
   }, {
     SetActiveUIObj: {
       get_uiWorldHudRoot:;
@@ -142,7 +142,7 @@ evt.CreateDeckCardForever: {
     mainPlayerCha.GetDataVar: "Tiaohe";
   }, {
     If: {
-      $arg0=={ArgIsCard: "682}";
+      $arg0=={ ArgIsCard: 682; };
     }, {
       CreateDeckCardForever: 685;
       mainPlayerCha.SetDataVar: "Tiaohe", "True";
@@ -159,7 +159,7 @@ evt.CreateDeckCardForever: {
     mainPlayerCha.GetDataVar: "Tiaohe2";
   }, {
     If: {
-      $arg0=={ArgIsCard: "749}";
+      $arg0=={ ArgIsCard: 749; };
     }, {
       CreateDeckCardForever: 750;
       DestroyCardForever: 685;
@@ -172,7 +172,7 @@ evt.CreateDeckCardForever: {
     mainPlayerCha.GetDataVar: "Tiaohe3";
   }, {
     If: {
-      $arg0=={ArgIsCard: "TiaoheG}";
+      $arg0=={ ArgIsCard: "TiaoheG"; };
     }, {
       CreateDeckCardForever: 4427;
       DestroyCardForever: 750;
@@ -183,7 +183,7 @@ evt.CreateDeckCardForever: {
 //墨汁隐藏UI
 evt.PreAddBuff: {
   If: {
-    $arg0=={ArgIsCard: "697}";
+    $arg0=={ ArgIsCard: 697; };
   }, {
     SetActiveUIObj: {
       get_uiWorldHudRoot:;
@@ -192,7 +192,7 @@ evt.PreAddBuff: {
 };
 evt.RemoveBuff: {
   If: {
-    $arg0=={ArgIsCard: "697}";
+    $arg0=={ ArgIsCard: 697; };
   }, {
     SetActiveUIObj: {
       get_uiWorldHudRoot:;
